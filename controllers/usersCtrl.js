@@ -1,4 +1,5 @@
 import User from "../model/User.js";
+import asyncHandler from "express-async-handler"
 import bcrypt from "bcrypt";
 
 // hash passwords for passwords 
@@ -12,15 +13,13 @@ async function hashPassword(password) {
         throw error;
     }
 }
-export const registerUserCtrl = async(req,res) =>{
+export const registerUserCtrl = asyncHandler(async(req,res) =>{
     
     const {fullname,email,password} = req.body;
     // check user exists
     const userExists = await User.findOne({email});
     if(userExists){
-        res.json({
-            msg:"User already exists"
-        });
+        throw new Error("User already exists");
     } 
     //hash password 
    const hashedPassword = await hashPassword(password);
@@ -35,6 +34,36 @@ export const registerUserCtrl = async(req,res) =>{
         message:'User registered successfully',
         data:user
     });
+   });
+
+
+
+export const loginUserCtrl = asyncHandler(async(req, res) =>{
+   
+    const {email, password} = req.body;
+// check user exists
+const userFound = await User.findOne({email});
+if(!userFound){
+    throw new Error("User not found");
+} 
+// check password
+const isMatch = await bcrypt.compare(password.toString(), userFound.password);
+if(!isMatch){
+    throw new Error("Invalid login credentials");
 }
+res.json({
+    status:'success',
+    message:'User logged in successfully',
+    data:userFound
+});
+
+
+
+});
+
+export const updateUserCtrl = async(req, res) =>{
+};
+
+
 
 export default registerUserCtrl;
