@@ -1,0 +1,25 @@
+{
+  "name": "nodejs-ecommerce-api",
+  "version": "1.0.0",
+  "description": "NodeJS E-commerce API",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "server": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "API",
+    "NodeJS"
+  ],
+  "author": "anand",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.3"
+  }
+}
