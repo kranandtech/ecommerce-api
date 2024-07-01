@@ -1,6 +1,9 @@
 import User from "../model/User.js";
 import asyncHandler from "express-async-handler"
 import bcrypt from "bcrypt";
+import generateToken from "../utils/generateToken.js";
+import { getTokenFromHeader } from "../utils/getTokenFromHeader.js";
+import { verifyToken } from "../utils/verifyToken.js";
 
 // hash passwords for passwords 
 async function hashPassword(password) {
@@ -54,15 +57,22 @@ if(!isMatch){
 res.json({
     status:'success',
     message:'User logged in successfully',
-    data:userFound
+    userFound,
+    token:generateToken(userFound?._id)
 });
 
 
 
 });
 
-export const updateUserCtrl = async(req, res) =>{
-};
+export const getUserProfile = asyncHandler(async(req, res) =>{
+    const token = getTokenFromHeader(req);
+    // verify token
+    const verified = verifyToken(token);
+    res.json({
+        msg:"welcome"
+    })
+});
 
 
 
