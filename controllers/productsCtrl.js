@@ -25,4 +25,12 @@ export const createProduct = asyncHandler(async(req,res)=>{
         message:"Product created successfully",
         product,
     })
-})
+});
+
+export const getProducts = asyncHandler(async(req,res)=>{
+    const products = await Product.find();
+    res.json({
+        status:"success",
+        products,
+    });
+});
